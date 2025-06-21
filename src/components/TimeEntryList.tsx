@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import type { TimeEntry } from "../types";
 
 interface Props {
-  entries: TimeEntry[]; // List of all time entries to display
-  onStart: (id: string) => void; // Start timer callback
-  onStop: (id: string) => void; // Stop timer callback
-  onTick: (id: string) => void; // Tick callback, increments seconds elapsed
-  onDelete: (id: string) => void; // Delete entry callback
-  onEdit: (id: string, updated: Partial<TimeEntry>) => void; // Edit entry callback
+  entries: TimeEntry[];
+  onStart: (id: string) => void;
+  onStop: (id: string) => void;
+  onTick: (id: string) => void;
+  onDelete: (id: string) => void;
+  onEdit: (id: string, updated: Partial<TimeEntry>) => void;
 }
 
-// Helper to format seconds into HH:MM:SS string
+// Helper to format seconds into HH:MM:SS
 function formatTime(seconds: number) {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
@@ -27,49 +27,53 @@ export default function TimeEntryList({
   onDelete,
   onEdit,
 }: Props) {
-  // Track which entry is currently being edited and its temporary fields
+  // State for currently edited entry ID and its input fields
   const [editId, setEditId] = useState<string | null>(null);
   const [editTask, setEditTask] = useState("");
   const [editH, setEditH] = useState("");
   const [editM, setEditM] = useState("");
   const [editS, setEditS] = useState("");
+  const [editError, setEditError] = useState("");
 
-  // Effect to trigger onTick every second for the running timer
+  // Effect for ticking the running timer every second
   useEffect(() => {
     const interval = setInterval(() => {
-      // Find the first running entry (only one allowed to run at a time)
       const running = entries.find((e) => e.isRunning);
-      if (running) onTick(running.id); // Notify parent to increment secondsElapsed
+      if (running) onTick(running.id);
     }, 1000);
-    return () => clearInterval(interval); // Clean up on unmount or entries change
+    return () => clearInterval(interval);
   }, [entries, onTick]);
 
-  // Handle saving edits to an entry
+  // Validate and submit edits for a task entry
   const handleEditSubmit = (id: string) => {
     const h = parseInt(editH) || 0;
     const m = parseInt(editM) || 0;
     const s = parseInt(editS) || 0;
     const total = h * 3600 + m * 60 + s;
 
-    // Validation: must have non-empty task and positive time
-    if (!editTask.trim() || total <= 0) {
-      alert("Valid task and time required.");
+    // Validate task name presence
+    if (!editTask.trim()) {
+      setEditError("Please enter a task name.");
       return;
     }
 
-    // Call parent edit callback with updated data
+    // Validate that total time is more than 0
+    if (total <= 0) {
+      setEditError("Please enter a timeframe greater than 0.");
+      return;
+    }
+
+    // Call parent to update entry, then clear editing state
     onEdit(id, { taskName: editTask, estimatedSeconds: total });
-    setEditId(null); // Exit edit mode
+    setEditId(null);
+    setEditError("");
   };
 
   return (
     <div>
       {entries.map((entry) => {
-        // Calculate remaining time, negative if overtime
         const remaining = entry.estimatedSeconds - entry.secondsElapsed;
         const isOvertime = remaining < 0;
-
-        // Format time display, prefix with "-" if overtime
         const displayTime = isOvertime
           ? `-${formatTime(-remaining)}`
           : formatTime(remaining);
@@ -77,23 +81,22 @@ export default function TimeEntryList({
         return (
           <div
             key={entry.id}
-            className={`task-card ${isOvertime ? "overtime" : ""}`} // Add overtime style if needed
+            className={`task-card ${isOvertime ? "overtime" : ""}`}
           >
             {editId === entry.id ? (
-              // Edit mode UI
               <div
                 className="flex justify-between w-full"
                 style={{ alignItems: "flex-start" }}
               >
                 <div className="task-info" style={{ flex: 1 }}>
-                  {/* Editable task name input */}
+                  {/* Task name edit input */}
                   <input
                     className="edit-input"
                     value={editTask}
                     onChange={(e) => setEditTask(e.target.value)}
                     placeholder="Task name"
                   />
-                  {/* Editable time inputs */}
+                  {/* Time edit inputs */}
                   <div
                     style={{
                       display: "flex",
@@ -120,8 +123,14 @@ export default function TimeEntryList({
                       placeholder="SS"
                     />
                   </div>
+                  {/* Inline edit validation error */}
+                  {editError && (
+                    <div className="text-red-400 font-medium text-sm mt-2">
+                      {editError}
+                    </div>
+                  )}
                 </div>
-                {/* Action buttons for save and cancel */}
+                {/* Action buttons for editing */}
                 <div className="task-actions" style={{ marginTop: "0.5rem" }}>
                   <button
                     onClick={() => handleEditSubmit(entry.id)}
@@ -129,18 +138,22 @@ export default function TimeEntryList({
                   >
                     Save
                   </button>
-                  <button onClick={() => setEditId(null)} className="delete">
+                  <button
+                    onClick={() => {
+                      setEditId(null);
+                      setEditError("");
+                    }}
+                    className="delete"
+                  >
                     Cancel
                   </button>
                 </div>
               </div>
             ) : (
-              // Normal display mode
+              // Display task info and controls when not editing
               <div className="flex justify-between w-full">
                 <div className="task-info">
-                  {/* Task name */}
                   <div className="task-name">{entry.taskName}</div>
-                  {/* Timer display with overtime styling */}
                   <div
                     className={`timer-display ${
                       isOvertime ? "overtime" : "normal"
@@ -149,7 +162,6 @@ export default function TimeEntryList({
                     {displayTime}
                   </div>
                 </div>
-                {/* Action buttons: start/stop, edit, delete */}
                 <div className="task-actions">
                   {entry.isRunning ? (
                     <button onClick={() => onStop(entry.id)} className="stop">
@@ -162,13 +174,14 @@ export default function TimeEntryList({
                   )}
                   <button
                     onClick={() => {
-                      // Enter edit mode, initialize edit state with current entry data
+                      // Populate edit form with existing entry data
                       setEditId(entry.id);
                       setEditTask(entry.taskName);
                       const t = entry.estimatedSeconds;
                       setEditH(Math.floor(t / 3600).toString());
                       setEditM(Math.floor((t % 3600) / 60).toString());
                       setEditS((t % 60).toString());
+                      setEditError("");
                     }}
                     className="edit"
                   >
