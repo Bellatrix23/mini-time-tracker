@@ -1,68 +1,220 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom right, #1e1e2f, #2a2a40);
+  font-family: "Inter", sans-serif;
+  color: #e0e0e0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  justify-content: center;
+  align-items: flex-start;
   min-height: 100vh;
+  padding-top: 50px;
 }
 
+#root {
+  width: 100%;
+  max-width: 720px;
+  background: #1a1a2b;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* ==== Header ==== */
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #f3f4f6;
 }
 
-button {
+/* ==== App Content Wrapper ==== */
+.app-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ==== Add Task Form ==== */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+form input {
+  flex: 1 1 140px;
+  min-width: 100px;
+  padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  border: 1px solid #3b3b4d;
+  background: #2e2e3e;
+  color: #f9fafb;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+form input:focus {
+  border-color: #6366f1;
+  outline: none;
+  box-shadow: 0 0 6px #6366f1;
+}
+
+form button {
+  padding: 10px 16px;
+  height: 42px;
+  font-weight: 500;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+form button:hover {
+  background-color: #4f46e5;
+}
+
+/* ==== Task Cards ==== */
+.task-card {
+  background: #2c2c3f;
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.task-card.overtime {
+  background: #3c1c1c;
+  border: 1px solid #b91c1c;
+}
+
+/* ==== Info Column ==== */
+.task-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-info > div {
+  display: flex;
+  gap: 10px;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.task-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f3f4f6;
+  margin-bottom: 0.2rem;
+}
+
+.timer-display {
+  font-family: "Courier New", monospace;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.timer-display.normal {
+  color: #34d399;
+}
+
+.timer-display.overtime {
+  color: #f87171;
+}
+
+/* ==== Actions ==== */
+.task-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.task-actions button {
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 72px;
+}
+
+/* Button Colors */
+button.start {
+  background-color: #10b981;
+  color: white;
+}
+button.start:hover {
+  background-color: #059669;
+}
+
+button.stop {
+  background-color: #ef4444;
+  color: white;
+}
+button.stop:hover {
+  background-color: #dc2626;
+}
+
+button.edit {
+  background-color: #3b82f6;
+  color: white;
+}
+button.edit:hover {
+  background-color: #2563eb;
+}
+
+button.delete {
+  background-color: #f87171;
+  color: white;
+}
+button.delete:hover {
+  background-color: #dc2626;
+}
+
+/* ==== Edit Inputs ==== */
+.task-card input {
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background: #1f1f2f;
+  color: #fff;
+  min-width: 100px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.task-card input:focus {
+  border-color: #6366f1;
+  outline: none;
+  box-shadow: 0 0 6px #6366f1;
+}
+
+.edit-input {
+  flex: 1 1 60px;
+  min-width: 60px;
+  max-width: 100px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #3b3b4d;
+  background: #2e2e3e;
+  color: #f9fafb;
+  font-size: 0.95rem;
+  box-sizing: border-box;
 }
