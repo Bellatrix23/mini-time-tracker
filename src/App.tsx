@@ -80,9 +80,7 @@ export default function App() {
   return (
     <div className="max-w-xl mx-auto mt-10 px-4">
       {/* Main Heading */}
-      <h1 className="text-2xl font-bold mb-4 text-center">
-        Task Countdown Tracker
-      </h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">Task Time Tracker</h1>
 
       {/* Display form validation error below the heading, centered */}
       {errorMessage && <div className="error-message">{errorMessage}</div>}
