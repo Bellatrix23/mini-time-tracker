@@ -2,10 +2,11 @@ import { useState, type FormEvent } from "react";
 import type { TimeEntry } from "../types";
 
 interface Props {
-  onAdd: (entry: TimeEntry) => void; // Function to add a new time entry, passed from parent
+  onAdd: (entry: TimeEntry) => void; // Callback to add a new entry to the parent state
+  setErrorMessage: (msg: string) => void; // Set error message to show in parent component
 }
 
-export default function TimeEntryForm({ onAdd }: Props) {
+export default function TimeEntryForm({ onAdd, setErrorMessage }: Props) {
   // Local state to hold input values for the task and time
   const [taskName, setTaskName] = useState("");
   const [hours, setHours] = useState("");
@@ -24,11 +25,20 @@ export default function TimeEntryForm({ onAdd }: Props) {
     // Calculate total seconds from hours, minutes, and seconds
     const totalSeconds = h * 3600 + m * 60 + s;
 
-    // Validate inputs: task name must not be empty, time must be positive
-    if (!taskName.trim() || totalSeconds <= 0) {
-      alert("Please enter a valid task name and time.");
-      return; // Stop submission if validation fails
+    // Validate task name presence
+    if (!taskName.trim()) {
+      setErrorMessage("Please enter a task name.");
+      return; // Stop submission if no task name
     }
+
+    // Validate that total time is more than 0
+    if (totalSeconds <= 0) {
+      setErrorMessage("Please enter a timeframe greater than 0.");
+      return; // Stop submission if no time entered
+    }
+
+    // If valid, clear error and add task
+    setErrorMessage("");
 
     // Call parent callback to add the new entry with generated id and timestamps
     onAdd({
@@ -50,7 +60,7 @@ export default function TimeEntryForm({ onAdd }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-wrap gap-2 mb-4 items-end"
+      className="flex flex-wrap gap-2 mb-2 items-end justify-center"
     >
       {/* Task name input */}
       <input
