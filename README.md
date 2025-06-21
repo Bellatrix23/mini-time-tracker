@@ -1,54 +1,94 @@
-# React + TypeScript + Vite
+# Mini Time Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A lightweight time tracking app built using **React** and **TypeScript** for the Looped Automation technical challenge. This app helps users manage how they spend their time by allowing them to create tasks, track time with a live timer, and view total estimated and actual time worked.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Add new time entries with task name and estimated time
+- Input validation for missing task name or time
+- Start and stop a live timer for active tracking
+- Edit or delete existing entries
+- Visual countdown with overtime highlighting
+- View total estimated time and total time worked
+- Fully responsive and clean UI design
+- Deployed and accessible online
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React with TypeScript
+- React Hooks (useState, useEffect)
+- Custom CSS (no frameworks)
+- Vercel for deployment
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Installation
+
+1. Clone the repo:
+
+```bash
+ git clone https://github.com/bellatrix23/mini-time-tracker.git
+
+cd mini-time-tracker
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2.  Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
+
+3. Start the app locally:
+
+```bash
+npm run dev
+```
+
+4. Open in your browser
+   Navigate to http://localhost:5173 (or the port Vite specifies) to view the app.
+
+## Assumptions & Trade-offs
+
+⏱ Time is handled in seconds behind the scenes for precision.
+
+🧠 Only one task can run at a time (prevents tracking overlap).
+
+💾 No database or persistence layer included to stay within the challenge scope.
+
+✨ The app is structured to easily support future data persistence (e.g., localStorage, Supabase).
+
+## Improvements with More Time
+
+🔒 Add persistent storage (e.g., localStorage or backend)
+
+📊 Display time usage analytics with charts
+
+👥 Support for multiple users and accounts
+
+🌗 Theme toggle (light/dark mode)
+
+🧪 Unit tests and integration tests for form and timer logic
+
+## Challenge Requirements Met
+
+- Built with React and TypeScript
+
+- Time entry form includes task name and hours worked
+
+- Displays list of time entries
+
+- Shows total hours worked
+
+- Input validation (required fields, positive time)
+
+- Clear commit history and component structure
+
+- Deployed to Vercel
+
+- README with setup instructions, assumptions, and improvement notes
+
+## Author
+
+Zoë Bell
+
+Junior FullStack Developer
+
+GitHub: https://github.com/Bellatrix23
