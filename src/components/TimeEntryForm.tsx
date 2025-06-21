@@ -26,19 +26,16 @@ export default function TimeEntryForm({ onAdd, setErrorMessage }: Props) {
     // Calculate total seconds from hours, minutes, and seconds
     const totalSeconds = h * 3600 + m * 60 + s;
 
-    // Validate inputs:
-    // Task name must not be empty and time must be positive
-    if (!taskName.trim() && totalSeconds <= 0) {
-      setErrorMessage("Please enter a task name and a timeframe.");
-      return; // Stop submission if both missing
-    }
+    // Validate task name presence
     if (!taskName.trim()) {
       setErrorMessage("Please enter a task name.");
-      return; // Stop submission if task name missing
+      return; // Stop submission if no task name
     }
+
+    // Validate that total time is more than 0
     if (totalSeconds <= 0) {
-      setErrorMessage("Please enter a timeframe.");
-      return; // Stop submission if time missing or zero
+      setErrorMessage("Please enter a timeframe greater than 0.");
+      return; // Stop submission if no time entered
     }
 
     // If valid, clear error and add task
@@ -62,45 +59,42 @@ export default function TimeEntryForm({ onAdd, setErrorMessage }: Props) {
   };
 
   return (
-    <>
-      {/* Task input form */}
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-wrap gap-2 mb-2 items-end"
-      >
-        {/* Task name input */}
-        <input
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-          placeholder="Task name"
-        />
-        {/* Hours input */}
-        <input
-          type="number"
-          value={hours}
-          onChange={(e) => setHours(e.target.value)}
-          placeholder="Hours"
-          min="0"
-        />
-        {/* Minutes input */}
-        <input
-          type="number"
-          value={minutes}
-          onChange={(e) => setMinutes(e.target.value)}
-          placeholder="Minutes"
-          min="0"
-        />
-        {/* Seconds input */}
-        <input
-          type="number"
-          value={seconds}
-          onChange={(e) => setSeconds(e.target.value)}
-          placeholder="Seconds"
-          min="0"
-        />
-        {/* Submit button */}
-        <button type="submit">Add Task</button>
-      </form>
-    </>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-wrap gap-2 mb-2 items-end justify-center"
+    >
+      {/* Task name input */}
+      <input
+        value={taskName}
+        onChange={(e) => setTaskName(e.target.value)}
+        placeholder="Task name"
+      />
+      {/* Hours input */}
+      <input
+        type="number"
+        value={hours}
+        onChange={(e) => setHours(e.target.value)}
+        placeholder="Hours"
+        min="0"
+      />
+      {/* Minutes input */}
+      <input
+        type="number"
+        value={minutes}
+        onChange={(e) => setMinutes(e.target.value)}
+        placeholder="Minutes"
+        min="0"
+      />
+      {/* Seconds input */}
+      <input
+        type="number"
+        value={seconds}
+        onChange={(e) => setSeconds(e.target.value)}
+        placeholder="Seconds"
+        min="0"
+      />
+      {/* Submit button */}
+      <button type="submit">Add Task</button>
+    </form>
   );
 }
