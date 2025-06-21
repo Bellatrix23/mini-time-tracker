@@ -109,13 +109,6 @@ form button:hover {
   flex-direction: column;
 }
 
-.task-info > div {
-  display: flex;
-  gap: 10px;
-  margin-top: 0.5rem;
-  flex-wrap: wrap;
-}
-
 .task-name {
   font-size: 1.05rem;
   font-weight: 600;
@@ -197,7 +190,6 @@ button.delete:hover {
   color: #fff;
   min-width: 100px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  box-sizing: border-box;
 }
 
 .task-card input:focus {
@@ -207,14 +199,6 @@ button.delete:hover {
 }
 
 .edit-input {
-  flex: 1 1 60px;
+  flex: 1;
   min-width: 60px;
-  max-width: 100px;
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #3b3b4d;
-  background: #2e2e3e;
-  color: #f9fafb;
-  font-size: 0.95rem;
-  box-sizing: border-box;
 }
